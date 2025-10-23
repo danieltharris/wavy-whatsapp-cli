@@ -32,9 +32,9 @@ jobs:
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
       - name: Build binary
-        env:
-          GOOS: ${{ inputs.goos }}
-          GOARCH: ${{ inputs.goarch }}
+        # env:
+        #   GOOS: ${{ inputs.goos }}
+        #   GOARCH: ${{ inputs.goarch }}
         shell: bash
         run: |
           EXTENSION=""
