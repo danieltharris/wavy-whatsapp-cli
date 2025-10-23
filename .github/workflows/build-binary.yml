@@ -38,7 +38,7 @@ jobs:
           if [ "${{ inputs.goos }}" = "windows" ]; then
             EXTENSION=".exe"
           fi
-          CGO_ENABLED=1 go build -ldflags "-X whatsmeow-go/cmd/wavy/common.Version=$VERSION" -o "bin/wavy-${{ inputs.goos }}-${{ inputs.goarch }}${EXTENSION}" ./cmd/wavy
+          go build -ldflags "-X whatsmeow-go/cmd/wavy/common.Version=$VERSION" -o "bin/wavy-${{ inputs.goos }}-${{ inputs.goarch }}${EXTENSION}" ./cmd/wavy
 
       - name: Upload binary as artifact
         uses: actions/upload-artifact@v4
