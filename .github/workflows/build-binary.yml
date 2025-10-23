@@ -35,6 +35,7 @@ jobs:
         env:
           GOOS: ${{ inputs.goos }}
           GOARCH: ${{ inputs.goarch }}
+        shell: bash
         run: |
           EXTENSION=""
           if [ "${{ inputs.goos }}" = "windows" ]; then
