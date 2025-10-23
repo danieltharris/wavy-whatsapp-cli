@@ -9,53 +9,44 @@ permissions:
   contents: write
 
 jobs:
-  build:
-    name: Build and Release
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        goos: [linux, darwin, windows]
-        goarch: [amd64, arm64]
-        exclude:
-          - goos: windows
-            goarch: arm64
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  build-linux-arm64:
+    uses: ./.github/workflows/build-binary.yml
+    with:
+      goos: linux
+      goarch: arm64
+      runner: ubuntu-22.04-arm
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: "1.24"
+  build-linux-amd64:
+    uses: ./.github/workflows/build-binary.yml
+    with:
+      goos: linux
+      goarch: amd64
+      runner: ubuntu-latest
 
-      - name: Get version from tag
-        id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+  build-darwin-arm64:
+    uses: ./.github/workflows/build-binary.yml
+    with:
+      goos: darwin
+      goarch: arm64
+      runner: macos-latest
 
-      - name: Build binary
-        env:
-          GOOS: ${{ matrix.goos }}
-          GOARCH: ${{ matrix.goarch }}
-          VERSION: ${{ env.VERSION }}
-        run: |
-          EXTENSION=""
-          if [ "${{ matrix.goos }}" = "windows" ]; then
-            EXTENSION=".exe"
-          fi
-          go build -ldflags "-X whatsmeow-go/cmd/wavy/common.Version=$VERSION" -o "bin/wavy-${{ matrix.goos }}-${{ matrix.goarch }}${EXTENSION}" ./cmd/wavy
-
-      - name: Upload binary as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: wavy-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: bin/wavy-${{ matrix.goos }}-${{ matrix.goarch }}*
-          if-no-files-found: error
+  build-darwin-amd64:
+    uses: ./.github/workflows/build-binary.yml
+    with:
+      goos: darwin
+      goarch: amd64
+      runner: macos-13
+  
+  build-windows-amd64:
+    uses: ./.github/workflows/build-binary.yml
+    with:
+      goos: windows
+      goarch: amd64
+      runner: windows-latest
 
   release:
     name: Create Release
-    needs: build
+    needs: [  build-linux-arm64, build-linux-amd64, build-darwin-arm64, build-darwin-amd64, build-windows-amd64 ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
