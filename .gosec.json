@@ -1,6 +1,3 @@
-# gosec configuration file
-# Run: gosec -conf .gosec.json ./...
-
 {
   "severity": "medium",
   "confidence": "medium",
