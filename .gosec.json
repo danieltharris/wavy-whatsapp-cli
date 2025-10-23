@@ -1,0 +1,19 @@
+# gosec configuration file
+# Run: gosec -conf .gosec.json ./...
+
+{
+  "severity": "medium",
+  "confidence": "medium",
+  "exclude": [
+    "G104"
+  ],
+  "exclude-generated": true,
+  "tests": false,
+  "exclude-dirs": [
+    "vendor",
+    "bin",
+    "dist",
+    "coverage",
+    ".git"
+  ]
+}

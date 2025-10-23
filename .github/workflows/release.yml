@@ -66,6 +66,17 @@ jobs:
         with:
           path: ./artifacts
 
+      - name: Flatten artifacts directory
+        run: |
+          mkdir -p ./release-files
+          find ./artifacts -type f -exec cp {} ./release-files/ \;
+
+      - name: Generate checksums
+        run: |
+          cd ./release-files
+          sha256sum * > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v2
@@ -73,5 +84,17 @@ jobs:
           name: Wavy WhatsApp CLI ${{ github.ref_name }}
           draft: false
           prerelease: false
-          files: ./artifacts/**/*
+          files: ./release-files/*
           generate_release_notes: true
+          body: |
+            ## Security
+            
+            Please verify the integrity of downloaded binaries using the SHA256 checksums:
+            
+            ```bash
+            # Download the binary and SHA256SUMS.txt
+            # Then verify:
+            sha256sum -c SHA256SUMS.txt --ignore-missing
+            ```
+            
+            See [SECURITY.md](https://github.com/danieltharris/wavy-whatsapp-cli/blob/main/SECURITY.md) for security best practices.

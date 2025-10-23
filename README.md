@@ -6,7 +6,7 @@
 
 Wavy is a lightweight command‑line interface for WhatsApp messaging powered by the [whatsmeow](https://github.com/tulir/whatsmeow) library. It lets you authenticate with a QR code, send messages to individuals or groups, verify phone numbers, and browse your group list, all from your terminal.
 
-[Key features](#key-features) · [Screenshot](#screenshot) · [Installation](#installation) · [Usage](#usage) · [Data Storage](#data-storage) · [Viewing WhatsApp Contact Data](#viewing-whatsapp-contact-data) · [Maintenance](#maintenance) · [Testing](#testing) · [Git Hooks](#git-hooks) · [Releases](#releases) · [License](#license)
+[Key features](#key-features) · [Screenshot](#screenshot) · [Installation](#installation) · [Usage](#usage) · [Data Storage](#data-storage) · [Viewing WhatsApp Contact Data](#viewing-whatsapp-contact-data) · [Security](#security) · [Maintenance](#maintenance) · [Testing](#testing) · [Git Hooks](#git-hooks) · [Releases](#releases) · [License](#license)
 
 ## Key features
 
@@ -224,6 +224,34 @@ You can also query the database directly from the command line:
 ```bash
 sqlite3 ~/.local/share/wavy/client.db "SELECT jid, name FROM whatsmeow_contacts"
 ```
+
+## Security
+
+### ⚠️ Security Considerations
+
+Wavy stores sensitive WhatsApp session data locally. Please review our security documentation:
+
+- **[Security Policy](SECURITY.md)** - Best practices, threat model, and reporting vulnerabilities
+- **[Security Audit](SECURITY_AUDIT.md)** - Comprehensive security assessment and findings
+- **[Security Summary](docs/SECURITY_SUMMARY.md)** - Quick overview of security status
+
+### Quick Security Tips
+
+1. **Protect Your Session Data**: The `client.db` file contains authentication tokens
+   ```bash
+   chmod 700 ~/.local/share/wavy
+   chmod 600 ~/.local/share/wavy/client.db
+   ```
+
+2. **Use Full Disk Encryption**: Encrypt your entire system to protect session data
+
+3. **Review Linked Devices**: Regularly check WhatsApp > Settings > Linked Devices
+
+4. **Avoid Debug Mode in Production**: Debug output may contain sensitive information
+
+5. **Keep Updated**: Always use the latest version for security fixes
+
+For detailed security information, see [SECURITY.md](SECURITY.md).
 
 ## Maintenance
 
