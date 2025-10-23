@@ -14,14 +14,14 @@ jobs:
     with:
       goos: linux
       goarch: arm64
-      runner: ubuntu-latest-arm64
+      runner: ubuntu-22.04-arm
 
   build-linux-amd64:
     uses: ./.github/workflows/build-binary.yml
     with:
       goos: linux
       goarch: amd64
-      runner: ubuntu-latest-amd64
+      runner: ubuntu-latest
 
   build-darwin-arm64:
     uses: ./.github/workflows/build-binary.yml
